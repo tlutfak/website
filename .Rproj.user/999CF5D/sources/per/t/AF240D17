@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576463957763.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3851768771",
+    "id" : "AF240D17",
+    "lastKnownWriteTime" : 1576463988,
+    "last_content_update" : 1576463988948,
+    "path" : "C:/Users/bowel/OneDrive/Desktop/website/content/Resume.Rmd",
+    "project_path" : "content/Resume.Rmd",
+    "properties" : {
+        "cursorPosition" : "46,0",
+        "scrollLine" : "31"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

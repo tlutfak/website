@@ -1,0 +1,282 @@
+---
+title: "Predicting Effectivenss of Cognitive Therapy Program on Depressed Patients"
+
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE,fig.align="center",warning=FALSE,message=FALSE,fig.width=8, fig.height=5, linewidth=60)
+options(tibble.width = 100,width = 100)
+library(tidyverse)
+
+```
+
+
+
+
+
+
+*The dataset I used for my project was the Beat the Blues (BtheB) dataset. It is a longitudinal study from a clinical trial that contains data on the effects of a multimedia program "Beat the Blues", that serves as cognitive therapy, on depression levels of depressed patients. The dataset has 100 observations and 8 variables. The first variable is a catergorical variable that specfies whether or not the patient took anti-depressent drugs. The next variable is length which indicates whether the current episode of depression has lasted more than or less than six months. Treatment group is the last catergorical variable and states whether the patient recieved the Beat the Blues treatment or thier usual treatment. The rest of the variables which includes bdi.pre, bdi.2m, bdi.4m, bdi.6m, bdi.8m are all numeric. They indicate the Beck Depression Inventory II score before, 2 months, 4 months, 6 months, and 8 months after the treatment respectively. *
+
+
+```{R}
+
+
+options(repos="https://cran.rstudio.com" )
+
+
+
+library(HSAUR)
+
+dataset1 <-(BtheB)
+
+
+
+
+
+```
+
+*Perform a MANOVA testing whether any of your numeric variables (or a subset of them, if including them all doesn’t make sense) show a mean difference across levels of one of your categorical variables (3). If they do, perform univariate ANOVAs to find response(s) showing a mean difference across groups (3), and perform post-hoc t tests to find which groups differ (3). Discuss the number of tests you have performed, calculate the probability of at least one type I error (if unadjusted), and adjust the significance level accordingly (bonferroni correction) before discussing significant differences (3). Briefly discuss assumptions and whether or not they are likely to have been met (2).*
+
+```{R echo=TRUE}
+
+question1 <-manova(cbind(bdi.2m,bdi.4m,bdi.6m)~treatment, data=dataset1)
+summary(question1)
+
+summary.aov(question1)
+
+dataset1%>%na.omit()%>%group_by(treatment)%>%summarize(mean(bdi.2m), mean(bdi.4m), mean(bdi.6m))
+
+pairwise.t.test(dataset1$bdi.2m, dataset1$treatment, p.adj="none")
+pairwise.t.test(dataset1$bdi.4m, dataset1$treatment, p.adj="none")
+pairwise.t.test(dataset1$bdi.6m, dataset1$treatment, p.adj="none")
+
+
+```
+
+*A (MANOVA) was conducted to determine the effect of the treatment(BtheB, TAU (treatment as usual)) on three dependent variables (bdi.2m, bdi.4m, bdi.6m) and significant differences were found among the 2 treatments on the three dependent measures (Pillai trace = 0.19598,  F = 4.3874, p < 0.05. Univariate analyses of variance (ANOVAs) for each dependent variable were conducted as follow-up tests to the MANOVA,the univariate ANOVAs for bdi.2m, bdi.4m, bdi.6m,  were also all significant with p<0.05. Lastly, post-hoc analysis was performed conducting pairwise comparisons to determine which Treatment differed in Beck Depression Inventory II after 2,4,and 6 months.  Overall, 10 hypothesis tests have been performed and the probability that I have made at least one type I error 0.5; The boneferroni adjusted significance level I should use is 0.005.  It was found that both treatments did not differ signifncantly from each other in terms of Beck Depression Inventory II score after 2 months, 4 months and 6 months of each treatment being administered after adjusting for multiple comparisons (bonferroni). When considering the many assumptions for MANOVA such as multivareat normality of DVs, Homogeneity of within-group covarience matrices, linear relationships among DVs, no multicollinearity were likely not met. *
+
+*(10 pts) Perform some kind of randomization test on your data (that makes sense). This can be anything you want! State null and alternative hypotheses, perform the test, and interpret the results (7). Create a plot visualizing the null distribution and the test statistic (3).*
+
+
+```{R echo=TRUE}
+dataset1%>%group_by(drug)%>%
+  summarize(means=mean(bdi.pre))%>%summarize(`mean_diff:`=diff(means))
+
+set.seed(348)
+rand_dist<-vector()
+
+for(i in 1:5000){
+new<-data.frame(bdi.pre=sample(dataset1$bdi.pre), druguse=dataset1$drug) 
+rand_dist[i]<-mean(new[new$drug=="No",]$bdi.pre)-
+ mean(new[new$drug=="Yes",]$bdi.pre)
+}
+
+{hist(rand_dist,main="",ylab=""); abline(v = 4.037338,col="red")}
+
+mean(rand_dist>4.037338)*2
+
+
+
+
+t.test(data=dataset1, bdi.pre~drug)
+ 
+
+```
+
+*The Null Hypothesis is that the mean starting Beck Depression Inventory II score is the same for patients on vs patients off anti-depressents. The Alternative Hypothesis is that the mean starting Beck Depression Inventory II score is different for patients on verus off anti depressents. After generating a distribution of 5000 mean differnces via a randomization test, the p value was 0.0644 which is larger than 0.05. Thus, we can refuse to reject the null hypothesis and say that there is not a signifcant difference in the pre-treatment Beck Depression Inventory score for patients on versus off anti-depressents; the independet t test for compariosn confimred this interpretation.*
+
+
+
+*Build a linear regression model predicting one of your response variables from at least 2 other variables, including their interaction. Mean-center any numeric variables involved in the inter- action.*
+
+
+```{R}
+library(lmtest)
+library(sandwich)
+library(tidyverse)
+library(dplyr)
+
+dataset1$bdi.8m_c1 <-dataset1$bdi.8m-mean(dataset1$bdi.8m,na.rm=TRUE)
+
+dataset1$bdi.pre_c1 <-dataset1$bdi.pre-mean(dataset1$bdi.pre,na.rm=TRUE)
+
+fit <-lm(bdi.8m_c1 ~ treatment * bdi.pre_c1, data=dataset1)
+summary(fit)
+
+
+
+dataset1%>%ggplot(aes(x=bdi.8m_c1, y=treatment, color=bdi.pre)) + geom_point()+geom_line()
+
+
+bptest(fit)#0.008
+
+resids<-fit$residuals
+fitvals<-fit$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color='red')
+
+shapiro.test(resids)#0.8238
+
+coeftest(fit,vcov=vcovHC(fit))
+
+summary(fit)$r.sq
+
+
+```
+*Based on regression results, when no treatment is applied and the "bdi.pre" (starting Beck Depression Inventory II Score) is zero, the Beck Depression Inventory II Score after 8 months of treatment is 2.0088.  On average, for every 1 unit increase in the Beat the Blues treatment, the Beck Depression Inventory II Score after 8 months of treatment decreases by about 3.9839 units. For every one unit increase in 'bdi.pre', on average, the Beck Depression Inventory II Score after 8 months of treatment increases by about 0.5779 units.  On average, for every one unit increase in the interaction between treatment and pre-treatment Beck Depression Inventory II Score, the Beck Depression Inventory II Score after 8 months of Beat the Blues treatment decreases by -0.3465. When looking at the assumptions, it failed to meet the homsckedasticty assumption as the Breusch-Pagan test returned a p-value less than 0.05 so the null hypothesis of homescadaskcity was accepted. Contrastly, it met the normality assumption as after performing the Shapiro-Wilk test p-value was greater than 0.05 so I failed to reject the  null hypothesis of normality. Lastly, through looking at the coded graph it met the linearity assumption as all the lines were straight. When comparing robust SE and original SE, the robust SE increased for all the coeffients. The treatment Beat the Blues, the interaction between Beat the Blues and pre-treatment bdi score, and the pre-treatment bdi score had no signigcnat effect on the patients Beck Depression Inventory Score 8 months after treatment as the p-value were less than 0.05 (0.1165 and 0.3346 respectively). However, before computing the roboust SE, the p-value of bdi.pre was 0.0095 (less than 0.05) and thus had a signifcant effect on Beck Depression INventory Score after 8 months. Overall, my model explains 22.20% of  the variation in the outcome. *
+*
+                                                          
+*(5 pts) Rerun same regression model (with interaction), but this time compute bootstrapped standard errors. Discuss any changes you observe in SEs and p-values using these SEs compared to the original SEs and the robust SEs)*
+
+
+```{R}
+
+samp_distn<-replicate(5000, {
+  boot_data<-dataset1[sample(nrow(dataset1),replace=TRUE),]
+  fit1<-lm(bdi.8m_c1~treatment*bdi.pre_c1,data=boot_data)
+  coef(fit1)
+})
+## Estimated SEs
+samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
+
+
+```
+*The Bootstrapped SE are less than the roboust SE for all variables and greater than all the original SE as well except for Treatment which is slightly lower.*
+
+* Perform a logistic regression predicting a binary categorical variable (if you don’t have
+one, make/get one) from at least two explanatory variables (interaction not necessary)*
+
+```{r}
+dataset1$y<-ifelse(dataset1$drug=='Yes',1,0)
+fit3<-glm(drug~treatment+length,data=dataset1,family=binomial(link="logit"))
+coeftest(fit3)
+exp(coef(fit3))
+
+
+dataset1$probability <-predict(fit3, data=dataset1, type = "response")
+table(predict=as.numeric(dataset1$probability>.5),truth=dataset1$y)%>%addmargins
+
+Accurancy <-(34+30)/100
+TPR <- 30/44
+TNR<- 34/56
+PVR<-30/52
+
+mean(dataset1[dataset1$y==1,]$probability>.5)
+
+ggplot(dataset1)+aes(probability, drug)+geom_line()
+
+library(plotROC)
+ROCplot<-ggplot(dataset1)+geom_roc(aes(d=y,m=probability), n.cuts=0)+
+geom_segment(aes(x=0,xend=1,y=0,yend=1),lty=2)
+ROCplot
+
+calc_auc(ROCplot)
+
+
+
+
+class_diag<-function(probs,truth){
+ tab<-table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
+ acc=sum(diag(tab))/sum(tab)
+ sens=tab[2,2]/colSums(tab)[2]
+ spec=tab[1,1]/colSums(tab)[1]
+ ppv=tab[2,2]/rowSums(tab)[2]
+ if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1
+ #CALCULATE EXACT AUC
+ ord<-order(probs, decreasing=TRUE)
+ probs <- probs[ord]; truth <- truth[ord]
+ TPR=cumsum(truth)/max(1,sum(truth))
+ FPR=cumsum(!truth)/max(1,sum(!truth))
+ dup<-c(probs[-1]>=probs[-length(probs)], FALSE)
+ TPR<-c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+ n <- length(TPR)
+ auc<- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+ data.frame(acc,sens,spec,ppv,auc)
+} 
+
+set.seed(1234)
+k=10 
+data1<-dataset1[sample(nrow(dataset1)),] 
+folds<-cut(seq(1:nrow(dataset1)),breaks=k,labels=F) 
+diags<-NULL
+for(i in 1:k){
+ 
+ train<-data1[folds!=i,]
+ test<-data1[folds==i,]
+ truth<-test$y
+ 
+ fit5<-glm(y~treatment+bdi.pre_c1,data=train,family="binomial")
+ probs<-predict(fit5,newdata = test,type="response")
+ 
+ diags<-rbind(diags,class_diag(probs,truth))
+}
+
+apply(diags,2,mean)
+```
+
+*When no treatment is applied and the length of the depressive episode is 0 months, the odds of the patients having used anti-depressents is 0.5491. When the length of the depressive episode is held constant, for every one unit increase in the Beat the Blues treatment, the odds of the pateint having taken anti-depressents increases by 3.353. When the application of treatment is held constant, for every 1 month increases in the length of the depressive episode, the odds of the patient having used anti-depressents increases by 0.5561. The Accuracy (the proportion of correctly classified cases) was 0.64, the Sensitivity (True Positive Rate, TPR) which is proportion of patients using drugs (1 cases) coreectly classified was 0.681, Specficity which is the proportion of pateints not using drugs ("0 cases") correctly classified was  0.607.Precsion (Positive Predictive Value, PPV) proportion classified as using drugs who actaully use drugs was 0.5769. The AUC was 0.6781which is the probability  that a randomly selected person taking drugs has a higher prediction than a randomly selected person not taking drugs. Overall, with it being 0.681 length of depressive episode and pre-treatment BDI are moderate preictors of a pateints taking anti-depressents. After the 10 Fold CV, the accurancy was 0.60, the senstivity was 0.4433, the specficity was 0.6957, the ppv was 0.60, and the auc was 0.6747.*
+
+
+6)
+```{r}
+library(glmnet)
+
+
+
+fit50<-glm(bdi.8m~ -1 + as.factor(length)+as.factor(treatment)+as.factor(drug)+bdi.pre, data = dataset1)
+model.matrix(fit)
+
+set.seed(1234)
+x<-model.matrix(fit50)
+x<-scale(x)
+y<-as.matrix(na.omit(dataset1$bdi.8m))
+
+cv2<-cv.glmnet(x,y)
+lasso2<-glmnet(x,y,lambda=cv2$lambda.1se)
+coef(cv2)
+
+
+set.seed(1234)
+k=10 
+data2<-dataset1[sample(nrow(dataset1)),]
+
+folds2<-cut(seq(1:nrow(dataset1)),breaks=k,labels=F)
+diags1<-NULL
+for(i in 1:k){
+ 
+ train1<-data2[ folds!=i,]
+ test1<-data2[ folds==i,]
+ truth2<-test1$bdi.8m
+ 
+ fit60<-glm(bdi.8m~as.factor(length)+bdi.pre, data = train1)
+ probs3<-predict(fit60,newdata = test1,type="response")
+
+diags<-mean((truth2-probs3)^2)
+}
+mean(diags1)
+
+summary(fit50)
+summary(fit60)
+
+
+
+
+
+
+```
+
+*The only variables retained were length and pre.bdi. Comparatively, the out of sample RMSE  was higher than the original.*
+
+

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576451166261.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3612839729",
+    "id" : "F060E454",
+    "lastKnownWriteTime" : 1576460013,
+    "last_content_update" : 1576463955442,
+    "path" : "C:/Users/bowel/OneDrive/Desktop/website/content/Project.Rmd",
+    "project_path" : "content/Project.Rmd",
+    "properties" : {
+        "cursorPosition" : "37,0",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

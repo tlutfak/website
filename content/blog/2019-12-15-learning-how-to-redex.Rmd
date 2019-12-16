@@ -1,0 +1,53 @@
+---
+title: Learning Python Basics and Indexing
+author: Tallya Lutfak
+date: '2019-12-15'
+slug: Learning-Python-Basics-and-Indexing
+categories: []
+tags: []
+description: ''
+![](/blog/2019-12-15-learning-how-to-redex_files/python-logo-master-v3-TM.png)
+
+
+---
+Python is a programming language, one of many, that is well developed and widely used by data scientists. It is known for being an easily readable language and is popular amoung the machine learning community. I'm assuming if you are reading this blog you are somewhat familar but some background information never hurts. Today, we are going to explore the backbone basics of Python. First, we are going to establish the main data types that exist in Python: intergers, float, string, and bool. 
+
+The first data type is an integer. As implied by its name this is used to identify...INTERGERS. 
+
+```{python}
+
+number_of_blogs = 1
+type(number_of_blogs)
+
+```
+
+The second type is a float which identifes real numbers and are written with a decimal point.
+```{python}
+example_of_float = 6.27
+type(example_of_float)
+```
+
+Another data type is a string which is quoted text
+```{python}
+example_of_string='hi'
+type(example_of_string)
+```
+
+One of the last types I will discuss is a boolean 
+which is values equaling true or false
+```{python}
+example_of_boolean=False
+type(example_of_boolean)
+```
+
+As you can see, in order to determine the data type of a variable you use the code type(variablename).
+
+Now that the various datatypes have been established, I am going to talk about for loops. A for loop in python is used to iterate a sequence over and over again in a loop. It can be applied to lists, strings, integers, and a wide range of things. An example of a for loop is presented below.
+
+
+ In order to construct a for loop you first name the variable (in this case letters) that equals the value of the items inside the sequence (in this case the string "thisisaforloop) for each interation until the end of the seqeunce is reached.  
+```{python}
+for letters in "thisisaforloop":
+  print(letters)
+```
+

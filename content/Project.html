@@ -1,0 +1,100 @@
+---
+title: "Exploring Income and Homicide Rates"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+<hr />
+<div id="tallya-lutfak-tl26427" class="section level2">
+<h2>Tallya Lutfak tl26427</h2>
+<hr />
+<p><em>The datasets I used for my project were 1)The Homicide Rates and Deaths Across US States and 2) The Gini Coeffiecent used to measure Inequality across States. I read an article recently that Income Inequality was a contributing factor to Homicide so decided to explore that relationship. The Dataset I called ‘Homicide’ contained 5 variables:YEAR, STATE, DEATH, RATE,URL. The same data was collected across five different years of 2017, 2016, 2015, 2014, 2005. The dataset I called ‘IncomeEquailty’ contained 3 variables: state or federal district, Rank according to Gini Coeffeinct, and Gini Coefficient. The Gini Coefficient was in this case used to measure income distribution across the state.</em></p>
+<pre class="r"><code>devtools::install_github(&quot;tidyverse/tidyr&quot;)
+
+library(tidyverse)
+library(dplyr)
+library(readr)
+options(repos = &quot;https://cran.rstudio.com&quot;)
+
+IncomeEquailty &lt;- read_csv(&quot;IncomeEquailty.csv&quot;)
+
+
+Homicide &lt;- read_csv(&quot;Homicide Mortality by State (1).csv&quot;)</code></pre>
+<pre class="r"><code>dataset &lt;- full_join(Homicide, IncomeEquailty, by = c(STATE = &quot;State or federal district&quot;))
+
+
+glimpse(dataset)</code></pre>
+<pre><code>## Observations: 253
+## Variables: 7
+## $ YEAR               &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 20…
+## $ STATE              &lt;chr&gt; &quot;AL&quot;, &quot;AK&quot;, &quot;AZ&quot;, &quot;AR&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;, &quot;DE&quot;, &quot;F…
+## $ RATE               &lt;dbl&gt; 12.9, 10.6, 6.6, 9.8, 5.1, 4.6, 3.2, 6.9, 6.4, 7.9…
+## $ DEATHS             &lt;dbl&gt; 602, 78, 441, 278, 2022, 261, 109, 63, 1269, 810, …
+## $ URL                &lt;chr&gt; &quot;/nchs/pressroom/states/alabama/alabama.htm&quot;, &quot;/nc…
+## $ Rank               &lt;dbl&gt; 45, 2, 31, 32, 48, 21, 49, 14, 46, 43, 5, 12, 40, …
+## $ `Gini Coefficient` &lt;dbl&gt; 0.4847, 0.4081, 0.4713, 0.4719, 0.4899, 0.4586, 0.…</code></pre>
+<p><em>After looking at my datasets, I decided since only one variable was shared that a full join would be appropriate to join the two datasets; this was becuase that would retain all the variables that were different and combine by the common variable of state. It should be noted that the STATE and state or federal district contained the same data but were named differently thus comcined as reflected in the code. </em></p>
+<pre class="r"><code>dataset1 &lt;- dataset %&gt;% select(everything(), `Rate of Homicide` = RATE, 
+    `Rank of Gini Coefficient` = Rank, -c(URL), `Deaths per 100,000 total population` = DEATHS) %&gt;% 
+    na.omit() %&gt;% filter(YEAR %in% c(&quot;2014&quot;)) %&gt;% mutate(min_rank(&quot;Deaths per 100,000 total population&quot;))
+
+glimpse(dataset1)</code></pre>
+<pre><code>## Observations: 50
+## Variables: 7
+## $ YEAR                                              &lt;dbl&gt; 2014, 2014, 2014, 2…
+## $ STATE                                             &lt;chr&gt; &quot;AL&quot;, &quot;AK&quot;, &quot;AZ&quot;, &quot;…
+## $ `Rate of Homicide`                                &lt;dbl&gt; 8.1, 4.7, 5.0, 7.7,…
+## $ `Deaths per 100,000 total population`             &lt;dbl&gt; 374, 37, 322, 217, …
+## $ `Rank of Gini Coefficient`                        &lt;dbl&gt; 45, 2, 31, 32, 48, …
+## $ `Gini Coefficient`                                &lt;dbl&gt; 0.4847, 0.4081, 0.4…
+## $ `min_rank(&quot;Deaths per 100,000 total population&quot;)` &lt;int&gt; 1, 1, 1, 1, 1, 1, 1…</code></pre>
+<pre class="r"><code>summarystats1 &lt;- dataset1 %&gt;% select(`Rate of Homicide`, `Deaths per 100,000 total population`, 
+    `Gini Coefficient`) %&gt;% summarize_all(funs(mean = mean, sd = sd, 
+    min = min, max = max, median = median, var = var, `quantile(75%)` = quantile(., 
+        0.75), cor = cor(`Gini Coefficient`, `Rate of Homicide`)))</code></pre>
+<pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
+## Please use a list of either functions or lambdas: 
+## 
+##   # Simple named list: 
+##   list(mean = mean, median = median)
+## 
+##   # Auto named with `tibble::lst()`: 
+##   tibble::lst(mean, median)
+## 
+##   # Using lambdas
+##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## This warning is displayed once per session.</code></pre>
+<pre class="r"><code>summarystatstidy1 &lt;- data.frame(`summary stastics` = t(summarystats1))
+glimpse(summarystatstidy1)</code></pre>
+<pre><code>## Observations: 24
+## Variables: 1
+## $ summary.stastics &lt;dbl&gt; 4.642000e+00, 3.155000e+02, 4.646480e-01, 2.518510e+…</code></pre>
+<p><em>The next thing I did was to clean up my joined dataset bit. I used ‘Select()’ to rename several of my columns for clarfication reasons. I also filtered the data from the 5 year time range to one specifc year (2014) becuase both data sets were colleced in 2014. In this chuck of code, I also used mutate and summarize to find the following summary stastics: mean, sd, varience,count, min, max,and correalation for my three numeric varaibles.</em></p>
+<pre class="r"><code>dataset1 %&gt;% ggplot(aes(x = `Gini Coefficient`, y = `Deaths per 100,000 total population`, 
+    color = STATE)) + geom_point() + theme_minimal() + ggtitle(&quot;Effect of Income Inequality on Deaths due to Homicide&quot;) + 
+    xlab(&quot;Income Equaility (measured via Gini Coefficient)&quot;) + 
+    ylab(&quot;Rate of Homicide&quot;)</code></pre>
+<p><img src="/Project_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dataset1 %&gt;% ggplot(aes(x = STATE, y = `Deaths per 100,000 total population`, 
+    fill = `Gini Coefficient`)) + geom_bar(stat = &quot;summary&quot;, 
+    fun.y = &quot;mean&quot;) + theme_minimal() + ggtitle(&quot;Effect of Income Inequality on Deaths due to Homicide&quot;) + 
+    xlab(&quot;Income Equaility (measured via Gini Coefficient) by STATE&quot;) + 
+    ylab(&quot;Rate of Homicide&quot;) + theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p><img src="/Project_files/figure-html/unnamed-chunk-4-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p><em>In this chuck of code, I used ggplot to create a couple of graphs. The first one is exploring the relationship between Income Inequality and Deaths due to Homicide. Surprisingly, there appears to be a postive, linear relationship between the two as the higher Gini Coefficent (which means high inequality) the higher the deaths due to homicide. This was actaully interesting to me becuase I didn’t expect to see a realtionship let alone a postive one.</em></p>
+<p><em>The next grpah displays the summary stastics (mean) of Deaths due to Homicide across all 50 states and colored in by Gini Coefficent. Interestingly,this further supports a postive relationship between Income Inequality and Homicide as the states with higher average deaths due to Homicide also reported higher Gini Coeffient. </em></p>
+<pre class="r"><code>## dataset1_pca&lt;-princomp(datanum)
+
+# summary(dataset1_pca, loadings=T)
+
+# eigval&lt;-dataset1_pca$sdev^2
+# varprop=round(eigval/sum(eigval),2)
+
+# ggplot()+geom_bar(aes(y=varprop,x=1:7),stat=&#39;identity&#39;)+xlab(&#39;&#39;)+geom_path(aes(y=varprop,x=1:7))+
+# geom_text(aes(x=1:7,y=varprop,label=round(varprop,2)),vjust=1,col=&#39;white&#39;,size=5)+
+# scale_y_continuous(breaks=seq(0,.6,.2),labels =
+# scales::percent)+ scale_x_continuous(breaks=1:10)</code></pre>
+</div>

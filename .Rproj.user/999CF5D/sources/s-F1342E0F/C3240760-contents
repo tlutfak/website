@@ -1,0 +1,20 @@
+{{ partial "head" . }}
+  <body>
+    <div id="wrap">
+      {{ partial "header" . }}
+      <section id="about">
+        <div class="container">
+        <div class="avatar">
+          <img class="img-circle" src="{{ .Site.BaseURL }}img/{{ .Site.Params.avatar }}" alt="It me." height=400px width=400px >
+        </div>
+        <h3>I'm <strong>{{ .Site.Params.author }}</strong>, a junior at the University of Texas at Austin. I am majoring in Biology and have an interest in data science and biopsychology. This is a portifolio of my current data science projects and informative posts about Python.</h3>
+        <h3>Have a look at some of my working <a href="{{ .Site.BaseURL }}projects/"> projects</a>.</h3>
+        <h3>For more about my qualifations and experince check out my academic &amp; professional <a href="/Resume.pdf">resume</a>.</h3>
+        <h3>Contact me at my github account <a href="http://github.com/{{ .Site.Params.Social.github }}">@{{ .Site.Params.Social.github }}</a> or by <a href="mailto:{{ .Site.Params.Social.Email }}">email</a>.</h3>
+        {{ partial "social.html" . }}
+        </div>
+      </section>
+    </div>
+    {{ partial "footer" . }}
+  </body>
+</html>

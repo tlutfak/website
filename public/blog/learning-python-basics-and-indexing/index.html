@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Tallya Lutfak" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Learning Python Basics and Indexing</title>
+    <meta name="generator" content="Hugo 0.61.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/blog/learning-python-basics-and-indexing/">Learning Python Basics and Indexing</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          December 15, 2019
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p>Python is a programming language, one of many, that is well developed and widely used by data scientists. It is known for being an easily readable language and is popular amoung the machine learning community. I’m assuming if you are reading this blog you are somewhat familar but some background information never hurts. Today, we are going to explore the backbone basics of Python. First, we are going to establish the main data types that exist in Python: intergers, float, string, and bool.</p>
+<p>The first data type is an integer. As implied by its name this is used to identify…INTERGERS.</p>
+<pre class="python"><code>
+number_of_blogs = 1
+type(number_of_blogs)</code></pre>
+<pre><code>## &lt;class &#39;int&#39;&gt;</code></pre>
+<p>The second type is a float which identifes real numbers and are written with a decimal point.</p>
+<pre class="python"><code>example_of_float = 6.27
+type(example_of_float)</code></pre>
+<pre><code>## &lt;class &#39;float&#39;&gt;</code></pre>
+<p>Another data type is a string which is quoted text</p>
+<pre class="python"><code>example_of_string=&#39;hi&#39;
+type(example_of_string)</code></pre>
+<pre><code>## &lt;class &#39;str&#39;&gt;</code></pre>
+<p>One of the last types I will discuss is a boolean
+which is vlaues equaling true or false</p>
+<pre class="python"><code>example_of_boolean=False
+type(example_of_boolean)</code></pre>
+<pre><code>## &lt;class &#39;bool&#39;&gt;</code></pre>
+<p>As you can see, in order to determine the data type of a variable you use the code type(variablename).</p>
+<p>Now that the various datatypes have been established, I am going to talk about for loops. A for loop in python is used to iterate a sequence over and over again in a loop. It can be applied to lists, strings, integers, and a wide range of things. An example of a for loop is presented below.</p>
+<p>In order to construct a for loop you first name the variable (in this case letters) that equals the value of the items inside the sequence (in this case the string "thisisaforloop) for each interation until the end of the seqeunce is reached.</p>
+<pre class="python"><code>for letters in &quot;thisisaforloop&quot;:
+  print(letters)</code></pre>
+<pre><code>## t
+## h
+## i
+## s
+## i
+## s
+## a
+## f
+## o
+## r
+## l
+## o
+## o
+## p</code></pre>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

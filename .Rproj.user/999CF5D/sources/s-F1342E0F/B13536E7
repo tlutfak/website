@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576462570771.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2084304505",
+    "id" : "B13536E7",
+    "lastKnownWriteTime" : 1576469623,
+    "last_content_update" : 1576469623480,
+    "path" : "C:/Users/bowel/OneDrive/Desktop/website/content/blog/2019-12-15-learning-how-to-redex.Rmd",
+    "project_path" : "content/blog/2019-12-15-learning-how-to-redex.Rmd",
+    "properties" : {
+        "cursorPosition" : "8,78",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

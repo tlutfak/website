@@ -1,0 +1,5 @@
+"0","devtools::install_github(""tidyverse/tidyr"")
+"
+"2","Skipping install of 'tidyr' from a github remote, the SHA1 (885d1af1) has not changed since last install.
+  Use `force = TRUE` to force installation
+"
