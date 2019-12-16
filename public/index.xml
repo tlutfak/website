@@ -12,21 +12,12 @@
     
     
     <item>
-      <title>Learning Python Basics and Indexing</title>
+      <title>Intro to Python Basics and For Loops</title>
       <link>/blog/learning-python-basics-and-indexing/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/blog/learning-python-basics-and-indexing/</guid>
       <description>Python is a programming language, one of many, that is well developed and widely used by data scientists. It is known for being an easily readable language and is popular amoung the machine learning community. I’m assuming if you are reading this blog you are somewhat familar but some background information never hurts. Today, we are going to explore the backbone basics of Python. First, we are going to establish the main data types that exist in Python: intergers, float, string, and bool.</description>
-    </item>
-    
-    <item>
-      <title>Projects</title>
-      <link>/projects/</link>
-      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
-      
-      <guid>/projects/</guid>
-      <description>Projects Here are my recent projects: - Data Wrangling and Exploratory Analysis Project - Modeling, Inference, Prediction Project </description>
     </item>
     
     <item>
@@ -58,6 +49,15 @@ Catalogued over 500 patient files into alphabetical order and then scanned them 
       
       <guid>/project2/</guid>
       <description>The dataset I used for my project was the Beat the Blues (BtheB) dataset. It is a longitudinal study from a clinical trial that contains data on the effects of a multimedia program “Beat the Blues”, that serves as cognitive therapy, on depression levels of depressed patients. The dataset has 100 observations and 8 variables. The first variable is a catergorical variable that specfies whether or not the patient took anti-depressent drugs.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>Projects Here are my recent projects: - Data Wrangling and Exploratory Analysis Project - Modeling, Inference, Prediction Project </description>
     </item>
     
   </channel>

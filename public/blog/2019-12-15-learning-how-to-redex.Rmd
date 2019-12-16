@@ -1,5 +1,5 @@
 ---
-title: Learning Python Basics and Indexing
+title: Intro to Python Basics and For Loops
 author: Tallya Lutfak
 date: '2019-12-15'
 slug: Learning-Python-Basics-and-Indexing
@@ -34,7 +34,7 @@ type(example_of_string)
 ```
 
 One of the last types I will discuss is a boolean 
-which is vlaues equaling true or false
+which is values equaling true or false
 ```{python}
 example_of_boolean=False
 type(example_of_boolean)

@@ -5,14 +5,14 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2084304505",
+    "hash" : "0",
     "id" : "B13536E7",
-    "lastKnownWriteTime" : 1576469623,
-    "last_content_update" : 1576469623480,
+    "lastKnownWriteTime" : 1576473355,
+    "last_content_update" : 1576473355094,
     "path" : "C:/Users/bowel/OneDrive/Desktop/website/content/blog/2019-12-15-learning-how-to-redex.Rmd",
     "project_path" : "content/blog/2019-12-15-learning-how-to-redex.Rmd",
     "properties" : {
-        "cursorPosition" : "8,78",
+        "cursorPosition" : "7,15",
         "scrollLine" : "0"
     },
     "read_only" : false,
